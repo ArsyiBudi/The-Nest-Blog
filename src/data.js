@@ -3,6 +3,7 @@ import Thumpnail2 from './images/blog2.jpg'
 import Thumpnail3 from './images/blog3.jpg'
 import Thumpnail4 from './images/blog4.jpg'
 
+
 export const data = [
     {
       id: '1',
