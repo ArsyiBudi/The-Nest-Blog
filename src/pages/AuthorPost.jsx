@@ -1,9 +1,12 @@
-import React from 'react'
+import React, { useState }from 'react'
+import PostItem from '../component/PostItem' 
+import { data } from '../data'
 
-const authorpost = () => {
+const Authorpost = () => {
+  const [post, setPost] = useState(data)
   return (
-    <section className="author_post">
-         {post.length > 0 ? <div className="container author_post-container">
+    <section className="post_container">
+         {post.length > 0 ? <div className="container posts_container">
          {
             post.map(({id, Thumpnail, category, title, desc, authorID}) =>
             <PostItem key={id} postID={id} Thumpnail={Thumpnail} category={category} title={title} description={desc} authorID={authorID}/>)
@@ -13,4 +16,4 @@ const authorpost = () => {
   )
 }
 
-export default authorpost
+export default Authorpost

@@ -1,9 +1,19 @@
-import React from 'react'
+import React, { useState }from 'react'
+import PostItem from '../component/PostItem' 
+import { data } from '../data'
 
-const categorypost = () => {
+const Categorypost = () => {
+  const [post, setPost] = useState(data)
   return (
-    <div>categorypost</div>
+    <section>
+         {post.length > 0 ? <div className="container posts_container">
+         {
+            post.map(({id, Thumpnail, category, title, desc, authorID}) =>
+            <PostItem key={id} postID={id} Thumpnail={Thumpnail} category={category} title={title} description={desc} authorID={authorID}/>)
+          }
+         </div> : <h2 className='center'>not post founds</h2>}
+        </section>
   )
 }
 
-export default categorypost
+export default Categorypost

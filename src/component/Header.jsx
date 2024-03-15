@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom'
 import { LayoutGrid } from 'lucide-react';
 import { X } from 'lucide-react';
 
-
 const Header = () => {
   return (
       <nav>
@@ -13,6 +12,7 @@ const Header = () => {
           </Link>
           <ul className="nav_menu">
             <li><Link to="/profile" >Ernest Achiever</Link></li>
+            <li><a href="#footer">category</a></li>
             <li><Link to="/createpost" >Create Post</Link></li>
             {/* <li><Link to="/createuser" >Create User</Link></li> */}
             <li><Link to="/Authors" >Author</Link></li>
