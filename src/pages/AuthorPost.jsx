@@ -1,9 +1,9 @@
 import React, { useState }from 'react'
 import PostItem from '../component/PostItem' 
-import { data } from '../data'
+import { DummyPost } from '../DummyPost'
 
 const Authorpost = () => {
-  const [post, setPost] = useState(data)
+  const [post, setPost] = useState(DummyPost)
   return (
     <section className="post_container">
          {post.length > 0 ? <div className="container posts_container">

@@ -11,7 +11,7 @@ const Header = () => {
           <LayoutGrid size={40} className='nav_logo'/>
           </Link>
           <ul className="nav_menu">
-            <li><Link to="/profile" >Ernest Achiever</Link></li>
+            <li><Link to="/profile/sdfsds" >Ernest Achiever</Link></li>
             <li><a href="#footer">category</a></li>
             <li><Link to="/createpost" >Create Post</Link></li>
             {/* <li><Link to="/createuser" >Create User</Link></li> */}

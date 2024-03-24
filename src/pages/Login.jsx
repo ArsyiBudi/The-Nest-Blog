@@ -19,7 +19,7 @@ const Login = () => {
             <h2>Sign Up</h2>
             <form className="form login_form">
               <p className="form_error-message">This is an error message</p>
-              <input type="email" placeholder='Email' name='email' value={userData.email} onChange={ChangeInputHandler}/>
+              <input type="email" placeholder='Email' name='email' value={userData.email} onChange={ChangeInputHandler} autoFocus/>
               <input type="password" placeholder='Password' name='password' value={userData.password} onChange={ChangeInputHandler}/>
               <button type="submit" className='btn primary'>Login</button>
             </form>

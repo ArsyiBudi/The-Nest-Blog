@@ -4,7 +4,7 @@ import Thumpnail3 from './images/blog3.jpg'
 import Thumpnail4 from './images/blog4.jpg'
 
 
-export const data = [
+export const DummyPost = [
     {
       id: '1',
       Thumpnail: Thumpnail1,
