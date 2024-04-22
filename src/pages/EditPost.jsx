@@ -1,13 +1,31 @@
 import React from 'react'
-import { useState } from 'react'
+import { useState, useEffect} from 'react'
 import ReactQuill from 'react-quill'
 import 'react-quill/dist/quill.snow.css'
+import { useNavigate, useParams} from 'react-router-dom';
+import { useContext } from 'react';
+import { UserContext } from '../context/userContext';
+import axios from 'axios'
 
 const Editpost = () => {
   const [title, setTitle] = useState('')
   const [category, setCategory] = useState('Uncategorized')
   const [description, setDescription] = useState('')
-  const [thumpnail, setThumpnail] = useState('')
+  const [thumbnail, setThumbnail] = useState('')
+  const [error, setError] = useState('')
+
+  const Navigate = useNavigate()
+  const { id } = useParams()
+  
+  const {currentUser} = useContext(UserContext)
+  const token = currentUser?.token;
+
+  // redirect to login page for any user who isn't logged in
+  useEffect(() => {
+    if(!token) {
+      Navigate('/login')
+    }
+  }, [])
 
   const modules = {
       toolbar: [  
@@ -29,24 +47,60 @@ const Editpost = () => {
   const POST_CATEGORIES = ["Agriculture", "Business", "Education", 
   "Entertainment", "Art", "Investment", "Uncategorized", "Weather"]
 
+useEffect(() => {
+  const getPost = async () => {
+    try {
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/posts/${id}`)
+      setTitle(response.data.title)
+      setDescription(response.data.description)
+      setCategory(response.data.category) // Set category value
+      if (response.data.thumbnail) {
+        setThumbnail(response.data.thumbnail);
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+  getPost(); // Call getPost function
+}, []) 
+
+const editPost = async (e) => {
+  e.preventDefault();
+
+  const postData = new FormData();
+  postData.set('title', title)
+  postData.set('category', category) // Use category state
+  postData.set('description', description)
+  postData.set('thumbnail', thumbnail)
+
+  try {
+    const response = await axios.patch(`${process.env.REACT_APP_BASE_URL}/posts/${id}`, postData, 
+    {withCredentials: true, headers: {"Authorization": `Bearer ${token}`}})
+
+    if(response.status === 200) { // Use strict equality operator
+      return Navigate('/')
+    }
+  } catch (error) {
+    console.log(error)
+  }
+}
+
   return (
     <section className="create-post">
       <div className="container">
         <h2>Edit Post</h2>
-        <p className="form_error-message">
-          This is an error message
-        </p>
-        <form action="" className="form create-post_form">
+        {error && <p className="form_error-message">{error}</p>}
+        <form action="" className="form create-post_form" onSubmit={editPost}>
           <input type="text" placeholder='Title' value={title} onChange={e => setTitle(e.target.value)} autoFocus/>
           <select name="category" value={category} onChange={e => setCategory(e.target.value)}>
             {
                 POST_CATEGORIES.map((cat => <option key={cat}>{cat}</option>))
             }
-            <ReactQuill modules={modules} formats={formats} value={description} onChange={setDescription} />
-            <input type="file" onChange={e => setThumpnail(e.target.files[0])} accept='png, jpg, jpeg' />
+            {/* <ReactQuill modules={modules} formats={formats} value={description} onChange={setDescription} />
+            <input type="file" onChange={e => setThumbnail(e.target.files[0])} accept='png, jpg, jpeg' /> */}
           </select>
-          <ReactQuill modules={modules} formats={formats} value={description} onChange={setDescription} />
-          <input type="file" onChange={e => setThumpnail(e.target.files[0])} accept='png, jpg, jpeg' />
+          <ReactQuill modules={modules} formats={formats} value={description} onChange={(html) => setDescription(html)}    />
+          <input type="file" onChange={e => setThumbnail(e.target.files[0])} accept='png, jpg, jpeg' />
           <button type='submit' className='btn primary'>Update</button>    
         </form>
       </div>

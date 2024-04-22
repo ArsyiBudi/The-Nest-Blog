@@ -17,11 +17,12 @@ import AuthorPost from "./pages/AuthorPost";
 import Dashboard from "./pages/Dashboard";
 import Logout from "./pages/Logout";
 import Deletepost from './pages/DeletePost';
+import UserProvider from './context/userContext';
 
 const router = createBrowserRouter([
   {
     path:"/",
-    element: <Layout/>,
+    element: <UserProvider><Layout/></UserProvider>,
     errorElement: <ErrorPage/>,
     children: [
         {index: true, element: <Home />},
@@ -33,7 +34,7 @@ const router = createBrowserRouter([
         {path: "createpost", element: <CreatePost />},
         {path: "posts/categories/:category", element: <CategoriesPost />},
         {path: "post/user/:id", element: <AuthorPost />},
-        {path: "myposts/ssd", element: <Dashboard />},
+        {path: "myposts/:id", element: <Dashboard />},
         {path: "post/:id/edit", element: <EditPost />},
         {path: "post/:id/delete", element: <Deletepost />},
         {path: "logout", element: <Logout />},

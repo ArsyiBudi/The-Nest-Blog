@@ -1,11 +1,17 @@
-import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import React, { useState, useContext } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
+import axios from 'axios'
+import { UserContext } from '../context/userContext'
 
 const Login = () => {
   const [userData, setUserData] = useState({
     email: '',
     password: '',
   })
+  const [error, setError] = useState("")
+  const navigate = useNavigate()
+
+  const {setCurrentUser} = useContext(UserContext)
 
   const ChangeInputHandler = (e) => {
     setUserData(prevState => {
@@ -13,17 +19,30 @@ const Login = () => {
     })
   }
 
+  const loginUser = async (e) => {
+    e.preventDefault();
+    setError('')
+    try {
+      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/users/login`, userData)
+      const user = await response.data;
+      setCurrentUser(user)
+      navigate('/')
+    } catch (error) {
+      setError(error.response.data.message)
+    }
+  }
+
   return (
         <section className="login">
           <div className="container">
-            <h2>Sign Up</h2>
-            <form className="form login_form">
-              <p className="form_error-message">This is an error message</p>
+            <h2>Login</h2>
+            <form className="form login_form" onSubmit={loginUser}>
+              {error && <p className="form_error-message">{error}</p>}
               <input type="email" placeholder='Email' name='email' value={userData.email} onChange={ChangeInputHandler} autoFocus/>
               <input type="password" placeholder='Password' name='password' value={userData.password} onChange={ChangeInputHandler}/>
               <button type="submit" className='btn primary'>Login</button>
             </form>
-            <small>Don't have an account ? <Link to="/register">Sign Up</Link></small>
+            <small>Don't have an account ? <Link to="/register">Register</Link></small>
           </div>
         </section>
     )
